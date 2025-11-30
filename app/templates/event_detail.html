@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>{{ event.title }}</h1>
+
+<p><strong>Date:</strong> {{ event.date }}</p>
+<p><strong>Host:</strong> {{ event.host }}</p>
+
+<div style="margin-top: 20px;">
+    <p>{{ event.description }}</p>
+</div>
+
+<a href="/events">← Back to all events</a>
+
+{% endblock %}

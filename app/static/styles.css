@@ -49,3 +49,7 @@ nav a:hover {
 .event-card a:hover {
     text-decoration: underline;
 }
+
+.event-detail {
+    line-height: 1.6;
+}
