@@ -32,7 +32,9 @@ def create_app():
     # Register routes
     from app.routes.home import home_bp
     from app.routes.events import events_bp
+    from app.routes.auth import auth_bp
     app.register_blueprint(home_bp)
     app.register_blueprint(events_bp)
+    app.register_blueprint(auth_bp)
 
     return app

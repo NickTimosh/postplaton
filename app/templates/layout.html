@@ -11,7 +11,12 @@
 <nav>
     <a href="/">Home</a>
     <a href="/events">Events</a>
-    <a href="/login">Login</a>
+    
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('auth.logout') }}" class="nav-link">Logout</a>
+    {% else %}
+        <a href="{{ url_for('auth.login') }}" class="nav-link">Host Login</a>
+    {% endif %}
 </nav>
 
 <div class="container">
