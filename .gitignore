@@ -14,7 +14,7 @@ __pycache__/
 
 instance/
 *.db
-
+migrations/ 
 *.log
 
 .DS_Store
