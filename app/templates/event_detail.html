@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
+
 {% block content %}
+<div class="container">
+    <h1>{{ event.title }}</h1>
+    <p><strong>Date:</strong> {{ event.date }}</p>
+    <p><strong>Host:</strong> {{ event.host }}</p>
+    <p><strong>Description:</strong> {{ event.description }}</p>
 
-<h1>{{ event.title }}</h1>
+    <a href="{{ url_for('events.edit_event', event_id=event.id) }}"><button>Edit</button></a>
 
-<p><strong>Date:</strong> {{ event.date }}</p>
-<p><strong>Host:</strong> {{ event.host }}</p>
+    <form method="POST" action="{{ url_for('events.delete_event', event_id=event.id) }}" style="display:inline;">
+        <button type="submit">Delete</button>
+    </form>
 
-<div style="margin-top: 20px;">
-    <p>{{ event.description }}</p>
+    <p style="margin-top:20px;"><a href="{{ url_for('events.events_list') }}">← Back to Events</a></p>
 </div>
-
-<a href="/events">← Back to all events</a>
-
 {% endblock %}
