@@ -2,15 +2,40 @@
 
 {% block content %}
 <div class="container">
+
     <h1>{{ title }}</h1>
+
     <form method="POST">
         {{ form.hidden_tag() }}
-        <p>{{ form.title.label }}<br>{{ form.title(size=50) }}</p>
-        <p>{{ form.date.label }}<br>{{ form.date(size=20) }}</p>
-        <p>{{ form.host.label }}<br>{{ form.host(size=50) }}</p>
-        <p>{{ form.description.label }}<br>{{ form.description(cols=50, rows=5) }}</p>
-        <p>{{ form.submit() }}</p>
+
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(size=50) }}
+        </p>
+
+        <p>
+            {{ form.date.label }}<br>
+            {{ form.date(size=20) }}
+        </p>
+
+        <p>
+            {{ form.host.label }}<br>
+            {{ form.host(size=50) }}
+        </p>
+
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(cols=50, rows=5) }}
+        </p>
+
+        <p>
+            {{ form.submit(class_="btn btn-create") }}
+        </p>
     </form>
-    <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
+
+    <p style="margin-top: 15px;">
+        <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
+    </p>
+
 </div>
 {% endblock %}

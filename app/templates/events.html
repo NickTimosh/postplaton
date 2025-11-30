@@ -2,29 +2,44 @@
 
 {% block content %}
 <div class="container">
+
     <h1>{{ title }}</h1>
 
-    <a href="{{ url_for('events.create_event') }}">
-        <button>Create New Event</button>
+    <a href="{{ url_for('events.create_event') }}" class="btn btn-create">
+        Create New Event
     </a>
 
-    {% for event in events %}
-    <div class="event-card">
-        <h2><a href="{{ url_for('events.event_detail', event_id=event.id) }}">{{ event.title }}</a></h2>
-        <p><strong>Date:</strong> {{ event.date }}</p>
-        <p><strong>Host:</strong> {{ event.host }}</p>
-        <p>{{ event.description[:100] }}{% if event.description|length > 100 %}...{% endif %}</p>
+    {% set has_events = false %}
+    {% for group_name, group_events in groups.items() %}
+        {% if group_events %}
+            {% set has_events = true %}
+            <h2 class="event-group-title">{{ group_name }}</h2>
 
-        <a href="{{ url_for('events.edit_event', event_id=event.id) }}">
-            <button>Edit</button>
-        </a>
+            {% for event in group_events %}
+            <div class="event-card">
+                <h3>
+                    <a href="{{ url_for('events.event_detail', event_id=event.id) }}">
+                        {{ event.title }}
+                    </a>
+                </h3>
 
-        <form method="POST" action="{{ url_for('events.delete_event', event_id=event.id) }}" style="display:inline;">
-            <button type="submit">Delete</button>
-        </form>
-    </div>
-    {% else %}
-    <p>No events yet. <a href="{{ url_for('events.create_event') }}">Create one now!</a></p>
+                <p><strong>Date:</strong> {{ event.date }}</p>
+                <p><strong>Host:</strong> {{ event.host }}</p>
+                <p class="description">{{ event.description }}</p>
+
+                <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">Edit</a>
+
+                <form method="POST"
+                      action="{{ url_for('events.delete_event', event_id=event.id) }}"
+                      style="display:inline;">
+                    <button type="submit" class="btn btn-delete">
+                        Delete
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        {% endif %}
     {% endfor %}
+
 </div>
 {% endblock %}

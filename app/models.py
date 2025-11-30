@@ -1,9 +1,10 @@
 from . import db
+from datetime import date
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.String(20), nullable=False) 
+    date = db.Column(db.Date, nullable=False) 
     host = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
 

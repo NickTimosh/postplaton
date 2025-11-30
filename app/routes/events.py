@@ -1,15 +1,46 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
+from datetime import date, timedelta
 from app.models import Event
 from app import db
 from app.forms import EventForm
 
 events_bp = Blueprint("events", __name__, url_prefix="/events")
 
-# List all Events
+# List grouped events
+def group_events(events):
+    """Return events grouped as Today, This Week, Next 30 Days."""
+
+    today = date.today()
+    end_of_week = today + timedelta(days=7)
+    next_30 = today + timedelta(days=30)
+
+    groups = {
+        "Today": [],
+        "This Week": [],
+        "Next 30 Days": []
+    }
+
+    for e in events:
+        if e.date == today:
+            groups["Today"].append(e)
+        elif today < e.date <= end_of_week:
+            groups["This Week"].append(e)
+        elif end_of_week < e.date <= next_30:
+            groups["Next 30 Days"].append(e)
+
+    return groups
+
 @events_bp.route("/")
 def events_list():
-    all_events = Event.query.all()
-    return render_template("events.html", events=all_events, title="Events")
+    all_events = Event.query.order_by(Event.date.asc()).all()
+
+    grouped = group_events(all_events)
+
+    return render_template(
+        "events.html",
+        title="Events",
+        groups=grouped
+    )
 
 # Event detail page
 @events_bp.route("/<int:event_id>")
