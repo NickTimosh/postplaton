@@ -9,6 +9,7 @@
     <p><strong>Host:</strong> {{ event.host }}</p>
     <p><strong>Description:</strong><br>{{ event.description }}</p>
 
+    {% if current_user.is_authenticated and current_user.is_host %}
     <div class="event-actions" style="margin-top: 20px;">
         <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
             Edit
@@ -20,6 +21,7 @@
             <button type="submit" class="btn btn-delete">Delete</button>
         </form>
     </div>
+    {% endif %}
 
     <p style="margin-top: 25px;">
         <a href="{{ url_for('events.events_list') }}">← Back to Events</a>

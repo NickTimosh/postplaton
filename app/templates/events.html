@@ -5,11 +5,12 @@
 
     <h1>{{ title }}</h1>
 
-    <a href="{{ url_for('events.create_event') }}" class="btn btn-create">
-        Create New Event
-    </a>
+    {% if current_user.is_authenticated and current_user.is_host %}
+        <a href="{{ url_for('events.create_event') }}" class="btn btn-create">Create New Event</a>
+    {% endif %}
 
     {% set has_events = false %}
+
     {% for group_name, group_events in groups.items() %}
         {% if group_events %}
             {% set has_events = true %}
@@ -27,15 +28,17 @@
                 <p><strong>Host:</strong> {{ event.host }}</p>
                 <p class="description">{{ event.description }}</p>
 
-                <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">Edit</a>
-
-                <form method="POST"
-                      action="{{ url_for('events.delete_event', event_id=event.id) }}"
-                      style="display:inline;">
-                    <button type="submit" class="btn btn-delete">
-                        Delete
-                    </button>
-                </form>
+                {% if current_user.is_authenticated and current_user.is_host %}
+                    <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">Edit</a>
+            
+                    <form method="POST"
+                        action="{{ url_for('events.delete_event', event_id=event.id) }}"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                {% else %}
+                 <!-- Hide from guests — nothing rendered -->
+                {% endif %}
             </div>
             {% endfor %}
         {% endif %}

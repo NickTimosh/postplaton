@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from datetime import date, timedelta
 from app.models import Event
 from app import db
 from app.forms import EventForm
+from flask_login import login_required, current_user
 
 events_bp = Blueprint("events", __name__, url_prefix="/events")
 
@@ -50,7 +51,12 @@ def event_detail(event_id):
 
 # Create new event
 @events_bp.route("/new", methods=["GET", "POST"])
+@login_required
 def create_event():
+
+    if not current_user.is_host:
+        abort(403)
+
     form = EventForm()
     if form.validate_on_submit():
         new_event = Event(
@@ -67,7 +73,12 @@ def create_event():
 
 # Edit existing event
 @events_bp.route("/<int:event_id>/edit", methods=["GET", "POST"])
+@login_required
 def edit_event(event_id):
+
+    if not current_user.is_host:
+        abort(403)
+
     event = Event.query.get_or_404(event_id)
     form = EventForm(obj=event)  # pre-fill form with current data
     if form.validate_on_submit():
@@ -82,7 +93,12 @@ def edit_event(event_id):
 
 # Delete event
 @events_bp.route("/<int:event_id>/delete", methods=["POST"])
+@login_required
 def delete_event(event_id):
+
+    if not current_user.is_host:
+        abort(403)
+
     event = Event.query.get_or_404(event_id)
     db.session.delete(event)
     db.session.commit()
