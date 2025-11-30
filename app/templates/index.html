@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>PostPlato</title>
-</head>
-<body>
-    <h1>Welcome to our Event Manager!</h1>
-    <p>Events will appear here soon.</p>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Welcome to the Event Manager</h1>
+<p>This is a simple platform where hosts can create events and users can browse and join them.</p>
+
+<h3>Quick Actions</h3>
+<ul>
+    <li><a href="/events">View upcoming events</a></li>
+    <li><a href="/login">Host login</a></li>
+</ul>
+
+{% endblock %}
