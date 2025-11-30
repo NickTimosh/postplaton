@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Upcoming Events</h1>
+
+{% if events %}
+    {% for event in events %}
+        <div class="event-card">
+            <h2>{{ event.title }}</h2>
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Host:</strong> {{ event.host }}</p>
+            <p>{{ event.description }}</p>
+            <a href="/events/{{ event.id }}">View details</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No events yet.</p>
+{% endif %}
+
+{% endblock %}

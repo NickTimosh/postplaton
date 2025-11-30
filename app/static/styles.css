@@ -27,3 +27,25 @@ nav a:hover {
     padding: 25px;
     border-radius: 8px;
 }
+
+.event-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: #fafafa;
+}
+
+.event-card h2 {
+    margin: 0 0 10px 0;
+}
+
+.event-card a {
+    color: #2c6bed;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.event-card a:hover {
+    text-decoration: underline;
+}
