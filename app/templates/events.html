@@ -18,10 +18,6 @@
         {% for event in group_events %}
         <article class="event-item">
           <div class="date-block">
-            {# if it's "Today" you'd like a label, otherwise show range/date - adjust as needed #}
-            {% if group_name == 'Today' %}
-              <div class="date-label">TODAY</div>
-            {% endif %}
             <div class="date-time">
               <div class="date-day">{{ event.date.strftime('%d') }}</div>
               <div class="date-month">{{ event.date.strftime('%b') }}</div>
