@@ -1,48 +1,64 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
+<section class="events-page">
+  <h1 class="page-title">{{ title }}</h1>
 
-    <h1>{{ title }}</h1>
+  {% if current_user.is_authenticated and current_user.is_host %}
+    <div class="page-actions">
+      <a href="{{ url_for('events.create_event') }}" class="btn btn-create">Create New Event</a>
+    </div>
+  {% endif %}
 
-    {% if current_user.is_authenticated and current_user.is_host %}
-        <a href="{{ url_for('events.create_event') }}" class="btn btn-create">Create New Event</a>
-    {% endif %}
+  {% for group_name, group_events in groups.items() %}
+    {% if group_events %}
+      <h2 class="group-heading">{{ group_name }}</h2>
 
-    {% set has_events = false %}
-
-    {% for group_name, group_events in groups.items() %}
-        {% if group_events %}
-            {% set has_events = true %}
-            <h2 class="event-group-title">{{ group_name }}</h2>
-
-            {% for event in group_events %}
-            <div class="event-card">
-                <h3>
-                    <a href="{{ url_for('events.event_detail', event_id=event.id) }}">
-                        {{ event.title }}
-                    </a>
-                </h3>
-
-                <p><strong>Date:</strong> {{ event.date }}</p>
-                <p><strong>Host:</strong> {{ event.host }}</p>
-                <p class="description">{{ event.description }}</p>
-
-                {% if current_user.is_authenticated and current_user.is_host %}
-                    <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">Edit</a>
-            
-                    <form method="POST"
-                        action="{{ url_for('events.delete_event', event_id=event.id) }}"
-                        style="display:inline;">
-                        <button type="submit" class="btn btn-delete">Delete</button>
-                    </form>
-                {% else %}
-                 <!-- Hide from guests — nothing rendered -->
-                {% endif %}
+      <div class="events-list">
+        {% for event in group_events %}
+        <article class="event-item">
+          <div class="date-block">
+            {# if it's "Today" you'd like a label, otherwise show range/date - adjust as needed #}
+            {% if group_name == 'Today' %}
+              <div class="date-label">TODAY</div>
+            {% endif %}
+            <div class="date-time">
+              <div class="date-day">{{ event.date.strftime('%d') }}</div>
+              <div class="date-month">{{ event.date.strftime('%b') }}</div>
+              <div class="date-hour">{{ event.date.strftime('%H:%M') if event.date.timetuple().tm_hour != 0 else '' }}</div>
             </div>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
+          </div>
 
-</div>
+          <div class="event-main">
+            <h3 class="event-title">
+              <a href="{{ url_for('events.event_detail', event_id=event.id) }}">{{ event.title }}</a>
+            </h3>
+
+            <p class="event-desc">{{ event.description }}</p>
+          </div>
+
+          <div class="event-meta">
+            <div class="meta-top">
+              <div class="meta-host"><strong>{{ event.date.strftime('%d %b') }}</strong></div>
+            </div>
+
+            <div class="meta-action">
+              <a href="#" class="btn btn-calendar">+ Add to calendar</a>
+
+              {% if current_user.is_authenticated and current_user.is_host %}
+                <div class="host-controls">
+                  <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit small">Edit</a>
+                  <form method="POST" action="{{ url_for('events.delete_event', event_id=event.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-delete small">Delete</button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</section>
 {% endblock %}

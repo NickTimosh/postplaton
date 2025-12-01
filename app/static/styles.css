@@ -1,121 +1,138 @@
-/* Minimal reset + box sizing */
+/* Reset & base */
 * { box-sizing: border-box; }
-
-/* Base */
+html,body { height: 100%; }
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: #f6f4f2; /* very light warm */
-  color: #333;
-  line-height: 1.5;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #15202b;
+  background: #eef3f8; /* soft pale blue background like the target */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Navigation */
-nav {
-  background: #333;
-  padding: 12px 20px;
-}
-nav a {
-  color: #fff;
-  margin-right: 18px;
-  text-decoration: none;
-  font-weight: 600;
-  opacity: 0.95;
-}
-nav a:hover { opacity: 1; text-decoration: underline; }
+/* Top nav (keeps simple) */
+.topnav { background: transparent; padding: 20px 0; }
+.topnav-inner { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; gap: 18px; padding: 0 20px; }
+.topnav-inner a { color: #22313f; text-decoration:none; font-weight:600; opacity:0.85; }
+.topnav-inner .spacer { flex:1; }
 
-/* Container */
-.container {
-  max-width: 900px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 28px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(23, 23, 23, 0.04);
+/* Page container centers the big white panel similar to the design */
+.page-wrap { display:flex; justify-content:center; padding: 28px 0 80px; }
+.page-container {
+  width: 100%;
+  max-width: 1100px;
+  background: transparent;
+  padding: 20px;
 }
 
-/* Card */
-.event-card {
-  border: 1px solid #e8e4e1;
+/* White panel that holds the cards */
+.events-page {
+  background: #f7fbff; /* extremely pale inside panel */
+  border-radius: 14px;
+  padding: 44px;
+  box-shadow: 0 10px 30px rgba(34,43,56,0.06);
+}
+
+/* Title */
+.page-title { margin: 0 0 28px 0; font-size: 28px; color: #0f2230; font-weight:700; }
+
+/* Create button area */
+.page-actions { margin-bottom: 12px; }
+.btn { display:inline-block; text-decoration:none; font-weight:600; border-radius:8px; padding:8px 14px; font-size:14px; }
+
+/* Events list */
+.group-heading {
+  margin: 22px 0 12px;
+  font-size: 18px;
+  color: #253444;
+  font-weight:700;
+}
+
+/* Events list wrapper */
+.events-list { display:flex; flex-direction:column; gap: 18px; }
+
+/* Single event — large rectangular card with left date badge and right action column */
+.event-item {
+  display:grid;
+  grid-template-columns: 98px 1fr 170px; /* left badge, main, right meta/action */
+  gap: 18px;
+  align-items:center;
+  background: #ffffff;
   padding: 18px 20px;
-  border-radius: 10px;
-  margin-bottom: 22px;
-  background: #fcfbfa;
-  transition: box-shadow .18s ease, transform .18s ease;
-}
-.event-card:hover {
-  box-shadow: 0 8px 24px rgba(20,20,20,0.06);
-  transform: translateY(-2px);
+  border-radius: 12px;
+  border: 1px solid rgba(27,39,51,0.04);
+  box-shadow: 0 8px 18px rgba(16,24,32,0.04);
 }
 
-/* Title / link */
-.event-card h2 { margin: 0 0 8px 0; font-size: 1.28em; }
-.event-card h2 a {
-  color: #5b8bff;       /* pastel blue */
-  text-decoration: none;
-  font-weight: 700;
+/* Date block (left) */
+.date-block {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
 }
-.event-card h2 a:visited { color: #5b8bff; }
+.date-label {
+  font-size:11px;
+  font-weight:700;
+  color:#475569;
+  background: #eef2ff;
+  padding:6px 8px;
+  border-radius:8px;
+}
+.date-time {
+  background:#f6f9fb;
+  border-radius:10px;
+  padding:10px 6px;
+  width:100%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+}
+.date-day { font-size:20px; font-weight:800; color:#18303a; }
+.date-month { font-size:12px; color:#5b6b74; text-transform:uppercase; letter-spacing:0.6px; margin-top:2px; }
+.date-hour { font-size:11px; color:#7a8a91; margin-top:6px; }
 
-/* Description (clamped) */
-.event-card p.description {
-  margin-top: 8px;
-  color: #444;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Main content */
+.event-main { min-width: 0; }
+.event-title { margin: 0 0 6px; font-size:16px; }
+.event-title a { color:#0d2b3c; text-decoration:none; font-weight:700; }
+.event-desc { margin: 0; color:#475569; font-size:13px; line-height:1.45; max-height:3.6em; overflow:hidden; }
+
+/* Right meta/action column */
+.event-meta { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+.meta-top { color:#5b6b74; font-size:13px; }
+.meta-action { display:flex; gap:10px; align-items:center; }
+
+/* Calendar button — pill on the right */
+.btn-calendar {
+  background: transparent;
+  border: 1px solid rgba(2,12,27,0.06);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight:700;
+  font-size:13px;
+  color:#0f2430;
+  text-decoration:none;
+}
+.btn-calendar:hover { background: rgba(2,12,27,0.02); }
+
+/* Small host control buttons */
+.btn.small { padding:8px 10px; border-radius:8px; font-size:13px; color:#fff; }
+.btn-edit.small { background:#7aa7ff; }
+.btn-delete.small { background:#ff9a92; }
+
+/* Create button global style */
+.btn-create { background:#0f5ef0; color:#fff; padding:10px 16px; border-radius:10px; }
+
+/* Responsive adjustments */
+@media (max-width: 880px) {
+  .event-item { grid-template-columns: 84px 1fr; grid-template-rows: auto auto; align-items:start; padding: 14px; }
+  .event-meta { grid-column: 1 / -1; align-items:flex-start; margin-top:8px; }
+  .page-container { padding: 0 18px; }
 }
 
-/* Small meta */
-.event-card p small, .event-card p strong { color: #222; }
-
-/* BUTTONS — normalized for <a> and <button> */
-.btn,
-button.btn,
-a.btn {
-  display: inline-block;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 14px;
-  border-radius: 8px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  color: #fff;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
-/* remove native button chrome */
-button.btn { appearance: none; -webkit-appearance: none; }
-
-/* Pastel action colors */
-.btn-create { background: #7bd389; }   /* soft green */
-.btn-create:hover { background: #63bf72; }
-
-.btn-edit   { background: #7aa7ff; }   /* soft blue */
-.btn-edit:hover { background: #5f92f0; }
-
-.btn-delete { background: #ff9a92; }   /* soft coral */
-.btn-delete:hover { background: #ff7b6f; }
-
-/* Ensure links inside card that are *not* buttons remain blue */
-.event-card a:not(.btn) { color: #5b8bff; }
-
-/* spacing tweak for stacked layout */
-.event-actions { margin-top: 12px; }
-
-/* Event detail small adjustments */
-.event-detail { padding-top: 6px; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .container { margin: 12px; padding: 18px; }
-  .event-card { padding: 14px; }
-  .btn, button.btn, a.btn { width: 100%; margin: 8px 0; height: 44px; line-height: 44px; }
+@media (max-width: 480px) {
+  .events-page { padding: 20px; }
+  .date-time { padding:8px 6px; }
+  .date-day { font-size:18px; }
 }
