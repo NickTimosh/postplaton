@@ -7,7 +7,7 @@
 
     <p><strong>Date:</strong> {{ event.event_datetime }}</p>
     <p><strong>Host:</strong> {{ event.host }}</p>
-    <p><strong>Description:</strong><br>{{ event.description }}</p>
+    <p><strong>Description:</strong><br>{{ event.description|replace('\n','<br>')|safe }}</p>
 
     {% if current_user.is_authenticated and current_user.is_host %}
     <div class="event-actions" style="margin-top: 20px;">
