@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from app.models import Event
 from app import db
 from app.forms import EventForm
@@ -7,14 +7,13 @@ from flask_login import login_required, current_user
 
 events_bp = Blueprint("events", __name__, url_prefix="/events")
 
-
 # ----------------------------
-# Grouping logic (updated)
+# Grouping logic
 # ----------------------------
 def group_events(events):
-    """Group events into Today, This Week, Next 30 Days using datetime."""
-    
-    today = date.today()
+    """Group events into Today, This Week, Next 30 Days using Kyiv time."""
+
+    today = datetime.now().date()
     end_of_week = today + timedelta(days=7)
     next_30 = today + timedelta(days=30)
 
@@ -25,7 +24,9 @@ def group_events(events):
     }
 
     for e in events:
+        # Use Kyiv local datetime for grouping
         event_date = e.event_datetime.date()
+        e.local_dt = e.event_datetime
 
         if event_date == today:
             groups["Today"].append(e)
@@ -44,11 +45,12 @@ def group_events(events):
 def events_list():
     all_events = Event.query.order_by(Event.event_datetime.asc()).all()
 
-    # Add end_datetime = start + 1 hour
-    for e in all_events:
-        e.end_datetime = e.event_datetime + timedelta(hours=2)
+    grouped = group_events(all_events)  # this now also sets e.local_dt
 
-    grouped = group_events(all_events)
+    # Optional: set end datetime for template
+    for group in grouped.values():
+        for e in group:
+            e.end_datetime = e.local_dt + timedelta(hours=2)
 
     return render_template(
         "events.html",
@@ -63,6 +65,10 @@ def events_list():
 @events_bp.route("/<int:event_id>")
 def event_detail(event_id):
     event = Event.query.get_or_404(event_id)
+
+    event.local_dt = event.event_datetime
+    event.end_dt = event.local_dt + timedelta(hours=2)
+
     return render_template("event_detail.html", event=event, title=event.title)
 
 
@@ -107,6 +113,7 @@ def edit_event(event_id):
         abort(403)
 
     event = Event.query.get_or_404(event_id)
+
     form = EventForm(obj=event)
 
     if form.validate_on_submit():
