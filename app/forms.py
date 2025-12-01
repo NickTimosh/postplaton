@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, DateTimeLocalField
 from wtforms.validators import DataRequired
 from wtforms.fields import DateField
 
@@ -10,7 +10,7 @@ class HostLoginForm(FlaskForm):
     
 class EventForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
-    date = DateField("Date", validators=[DataRequired()], format="%Y-%m-%d")
+    event_datetime = DateTimeLocalField("Event Time",format="%Y-%m-%dT%H:%M",validators=[DataRequired()])
     host = StringField("Host", validators=[DataRequired()])
     description = TextAreaField("Description")
     submit = SubmitField("Save")
