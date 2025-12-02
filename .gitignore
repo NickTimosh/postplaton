@@ -19,3 +19,6 @@ migrations/
 
 .DS_Store
 Thumbs.db
+
+create_admin.py
+reset_password.py
