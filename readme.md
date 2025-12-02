@@ -38,7 +38,11 @@ pip install -r ~/postplaton/requirements.txt
 Database notes:
 
 - SQLite DB (instance/events.db) is live. Do not overwrite it unless you want to reset it.
-- For migrations, you can either Use flask db upgrade via Bash console (e.g.`reset_password.py`) Or manually update the database file locally and upload.
+- For migrations, you can either Use flask db upgrade via Bash console (e.g.`reset_password.py`) Or manually update the database file locally and upload:
+
+```bash
+flask db migrate -m "Add EventResources table"
+```
 
 #### Step 7: Optionally: environmental variables
 If you want to avoid hardcoding secrets, open your WSGI file and set: `os.environ['SECRET_KEY'] = 'super_secret_here'`

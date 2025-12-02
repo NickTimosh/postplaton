@@ -9,13 +9,15 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
 
     # Database configuration
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "DATABASE_URL",
-        "sqlite:///" + os.path.join(app.instance_path, "events.db")
-    )
+    db_path = os.path.join(app.instance_path, "events.db")
+    db_path = db_path.replace("\\", "/")
+
+    # Set SQLAlchemy database URI
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-key") 
 
@@ -42,3 +44,4 @@ def create_app():
     app.register_blueprint(auth_bp)
 
     return app
+
