@@ -121,12 +121,33 @@ body {
 .btn-calendar:hover { background: rgba(2,12,27,0.02); }
 
 /* Small host control buttons */
-.btn.small { padding:8px 10px; border-radius:8px; font-size:13px; color:#fff; }
+.btn.small {
+  padding: 4px 8px;      /* smaller buttons */
+  font-size: 12px;       /* smaller text */
+  border-radius: 6px;    /* slightly smaller rounding */
+  color: #fff;
+  width: 60px;           /* fixed width so Edit/Delete match */
+  height: 25px;           /* fixed width so Edit/Delete match */
+  display: inline-block;
+  text-align: center;
+  border: none;          /* remove any default border */
+  cursor: pointer;       /* optional: pointer on hover */
+}
+
+.btn.small:hover { 
+  filter: brightness(90%);  /* slightly darker on hover */
+  transition: 0.2s ease-in-out;
+}
+
 .btn-edit.small { background:#7aa7ff; }
 .btn-delete.small { background:#ff9a92; }
 
 /* Create button global style */
 .btn-create { background:#0f5ef0; color:#fff; padding:10px 16px; border-radius:10px; }
+.btn-create:hover { 
+  filter: brightness(90%);  /* slightly darker on hover */
+  transition: 0.2s ease-in-out;
+}
 
 .pagination {
     margin-top: 25px;

@@ -30,14 +30,17 @@
 
       <!-- Right meta -->
       <div class="event-meta">
-        <div class="meta-action">
-          <a 
-            href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&details={{ event.description|urlencode }}&dates={{ event.event_datetime.strftime('%Y%m%dT%H%M00') }}/{{ event.end_dt.strftime('%Y%m%dT%H%M00') }}&ctz=Europe/Kyiv"
-            target="_blank"
-            class="btn btn-calendar"
-          > + Add to calendar</a>
+            <div class="meta-action">
+              {% if current_user.is_authenticated and current_user.is_host %}
+                <div class="host-controls">
+                  <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit small">Edit</a>
+                  <form method="POST" action="{{ url_for('events.delete_event', event_id=event.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-delete small">Delete</button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
         </div>
-      </div>
 
     </article>
     {% endfor %}

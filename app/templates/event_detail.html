@@ -9,19 +9,19 @@
   <p><strong>Host:</strong> {{ event.host }}</p>
   <p><strong>Description:</strong><br>{{ event.description|replace('\n','<br>')|safe }}</p>
 
-  {% if current_user.is_authenticated and current_user.is_host %}
-  <div class="event-actions" style="margin-top: 20px;">
-      <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
-          Edit
-      </a>
+    {% if current_user.is_authenticated and current_user.is_host %}
+    <div class="event-actions" style="margin-top: 20px;">
+        <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit small">
+             Edit 
+        </a>
 
-      <form method="POST"
+        <form method="POST"
             action="{{ url_for('events.delete_event', event_id=event.id) }}"
             style="display:inline;">
-          <button type="submit" class="btn btn-delete">Delete</button>
-      </form>
-  </div>
-  {% endif %}
+            <button type="submit" class="btn btn-delete small">Delete</button>
+        </form>
+    </div>
+    {% endif %}
 
   <p style="margin-top: 25px;">
       <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
