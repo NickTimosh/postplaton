@@ -48,14 +48,14 @@
             </div> -->
 
             <div class="meta-action">
-              
+              {% if not (current_user.is_authenticated and current_user.is_host) %}
                 <a 
-                    href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&details={{ event.description|urlencode }}&dates={{ event.event_datetime.strftime('%Y%m%dT%H%M00') }}/{{ event.end_datetime.strftime('%Y%m%dT%H%M00') }}
-                    &ctz=Europe/Kyiv"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn btn-calendar"
+                  href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&details={{ event.description|urlencode }}&dates={{ event.event_datetime.strftime('%Y%m%dT%H%M00') }}/{{ event.end_datetime.strftime('%Y%m%dT%H%M00') }}&ctz=Europe/Kyiv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-calendar"
                 > + Add to calendar</a>
+              {% endif %}
 
               {% if current_user.is_authenticated and current_user.is_host %}
                 <div class="host-controls">
