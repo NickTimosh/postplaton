@@ -1,31 +1,31 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
+<section class="events-page">
 
-    <h1>{{ event.title }}</h1>
+  <h1 class="page-title">{{ event.title }}</h1>
 
-    <p><strong>Date:</strong> {{ event.event_datetime }}</p>
-    <p><strong>Host:</strong> {{ event.host }}</p>
-    <p><strong>Description:</strong><br>{{ event.description|replace('\n','<br>')|safe }}</p>
+  <p><strong>Date:</strong> {{ event.event_datetime.strftime('%A, %d %B %Y, %H:%M') }}</p>
+  <p><strong>Host:</strong> {{ event.host }}</p>
+  <p><strong>Description:</strong><br>{{ event.description|replace('\n','<br>')|safe }}</p>
 
-    {% if current_user.is_authenticated and current_user.is_host %}
-    <div class="event-actions" style="margin-top: 20px;">
-        <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
-            Edit
-        </a>
+  {% if current_user.is_authenticated and current_user.is_host %}
+  <div class="event-actions" style="margin-top: 20px;">
+      <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
+          Edit
+      </a>
 
-        <form method="POST"
-              action="{{ url_for('events.delete_event', event_id=event.id) }}"
-              style="display:inline;">
-            <button type="submit" class="btn btn-delete">Delete</button>
-        </form>
-    </div>
-    {% endif %}
+      <form method="POST"
+            action="{{ url_for('events.delete_event', event_id=event.id) }}"
+            style="display:inline;">
+          <button type="submit" class="btn btn-delete">Delete</button>
+      </form>
+  </div>
+  {% endif %}
 
-    <p style="margin-top: 25px;">
-        <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
-    </p>
+  <p style="margin-top: 25px;">
+      <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
+  </p>
 
-</div>
+</section>
 {% endblock %}
