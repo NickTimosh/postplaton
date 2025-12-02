@@ -58,6 +58,38 @@ def events_list():
         groups=grouped
     )
 
+# ----------------------------
+# Past events with pagination
+# ----------------------------
+@events_bp.route("/past")
+def past_events():
+
+    page = request.args.get("page", 1, type=int)
+    per_page = 10  # simplest choice
+
+    today = datetime.now()
+
+    # Query only needed rows per page
+    pagination = (
+        Event.query
+        .filter(Event.event_datetime < today)
+        .order_by(Event.event_datetime.desc())
+        .paginate(page=page, per_page=per_page, error_out=False)
+    )
+
+    events = pagination.items
+
+    # Compute end time for calendar links
+    for e in events:
+        e.local_dt = e.event_datetime
+        e.end_dt = e.local_dt + timedelta(hours=2)
+
+    return render_template(
+        "past_events.html",
+        title="Past Events",
+        events=events,
+        pagination=pagination
+    )
 
 # ----------------------------
 # Event detail page

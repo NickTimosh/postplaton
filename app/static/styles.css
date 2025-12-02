@@ -128,6 +128,37 @@ body {
 /* Create button global style */
 .btn-create { background:#0f5ef0; color:#fff; padding:10px 16px; border-radius:10px; }
 
+.pagination {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    font-size: 14px;
+    color: #6c757d; /* soft gray */
+}
+
+.pagination a {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+
+    border: 1px solid #d0d0d0;
+    color: #333;
+
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background: #f2f2f2;
+}
+
+.pagination span {
+    font-weight: 500;
+    color: #5a5a5a;
+}
+
 /* Responsive adjustments */
 @media (max-width: 880px) {
   .event-item { grid-template-columns: 84px 1fr; grid-template-rows: auto auto; align-items:start; padding: 14px; }

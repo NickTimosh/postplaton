@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="events-page">
+  <h1 class="page-title">{{ title }}</h1>
+
+  <div class="events-list">
+    {% for event in events %}
+    <article class="event-item">
+
+      <!-- Left date block -->
+      <div class="date-block">
+        <div class="date-top">
+          {{ event.event_datetime.strftime('%d %b').upper() }}
+        </div>
+        <div class="date-time-big">
+          {% if event.event_datetime.strftime('%H:%M') != '00:00' %}
+            {{ event.event_datetime.strftime('%H:%M') }}
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Main info -->
+      <div class="event-main">
+        <h3 class="event-title">
+          <a href="{{ url_for('events.event_detail', event_id=event.id) }}">{{ event.title }}</a>
+        </h3>
+        <p class="event-desc">{{ event.description }}</p>
+      </div>
+
+      <!-- Right meta -->
+      <div class="event-meta">
+        <div class="meta-action">
+          <a 
+            href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.title|urlencode }}&details={{ event.description|urlencode }}&dates={{ event.event_datetime.strftime('%Y%m%dT%H%M00') }}/{{ event.end_dt.strftime('%Y%m%dT%H%M00') }}&ctz=Europe/Kyiv"
+            target="_blank"
+            class="btn btn-calendar"
+          > + Add to calendar</a>
+        </div>
+      </div>
+
+    </article>
+    {% endfor %}
+  </div>
+
+  {% if pagination %}
+    <div class="pagination">
+      {% if pagination.has_prev %}
+        <a href="{{ url_for('events.past_events', page=pagination.prev_num) }}">Previous</a>
+      {% endif %}
+
+      <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+      {% if pagination.has_next %}
+        <a href="{{ url_for('events.past_events', page=pagination.next_num) }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</section>
+{% endblock %}
