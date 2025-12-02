@@ -64,6 +64,18 @@ body {
   box-shadow: 0 8px 18px rgba(16,24,32,0.04);
 }
 
+.past-event-item {
+  display: grid;
+  grid-template-columns: 98px 1fr 80px; /* left badge, main content, small right column */
+  gap: 18px;
+  align-items: center;
+  background: #ffffff;
+  padding: 18px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(27, 39, 51, 0.04);
+  box-shadow: 0 8px 18px rgba(16, 24, 32, 0.04);
+}
+
 /* Date block (left) */
 .date-block {
   width: 100px;
