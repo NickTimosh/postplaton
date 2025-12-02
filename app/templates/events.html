@@ -20,15 +20,13 @@
 
           <!-- Left date block -->
           <div class="date-block">
-            <div class="date-time">
-              <div class="date-day">{{ event.event_datetime.strftime('%d') }}</div>
-              <div class="date-month">{{ event.event_datetime.strftime('%b') }}</div>
-
-              <div class="date-hour">
-                {% if event.event_datetime.strftime('%H:%M') != '00:00' %}
-                  {{ event.event_datetime.strftime('%H:%M') }}
-                {% endif %}
-              </div>
+            <div class="date-top">
+              {{ event.event_datetime.strftime('%d %b').upper() }}
+            </div>
+            <div class="date-time-big">
+              {% if event.event_datetime.strftime('%H:%M') != '00:00' %}
+                {{ event.event_datetime.strftime('%H:%M') }}
+              {% endif %}
             </div>
           </div>
 
