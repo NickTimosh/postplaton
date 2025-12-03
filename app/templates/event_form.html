@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-
 {% block content %}
 <section class="events-page">
 
     <h1 class="page-title">{{ title }}</h1>
 
+    <!-- MAIN EVENT FORM -->
     <form method="POST" class="event-form">
         {{ form.hidden_tag() }}
 
@@ -28,34 +28,49 @@
             {{ form.description(class="form-textarea large-textarea") }}
         </div>
 
-    {% if current_user.is_host and event %}
+        {% if current_user.is_host and event %}
 
-    <h2 class="group-heading">Resources</h2>
+        <h2 class="group-heading">Resources</h2>
 
-    <div class="resource-list">
-        {% for resource in event.resources %}
-        <div class="resource-card">
-            <a href="{{ resource.url }}" target="_blank" class="resource-title">
-                {{ resource.title }}
-            </a>
+        <div class="resource-list">
+            {% for resource in event.resources %}
+            <div class="resource-card">
+                <a href="{{ resource.url }}" target="_blank" class="resource-title">
+                    {{ resource.title }}
+                </a>
 
-            <form action="{{ url_for('events.delete_resource', resource_id=resource.id) }}"
-                method="POST">
-                <button type="submit" class="icon-btn delete-btn" title="Delete">
+                <!-- DELETE BUTTON MOVED OUTSIDE MAIN FORM -->
+                <button class="icon-btn delete-btn"
+                        formaction="{{ url_for('events.delete_resource', resource_id=resource.id) }}"
+                        formmethod="POST">
                     ✕
                 </button>
-            </form>
-        </div>
-        {% else %}
-        <p class="event-details-line">No resources yet.</p>
-        {% endfor %}
-    </div>
 
+            </div>
+            {% else %}
+            <p class="event-details-line">No resources yet.</p>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+        <!-- SAVE BUTTON (NOW WORKS) -->
+        <div class="form-actions" style="margin-top: 30px;">
+            {{ form.submit(class_="btn btn-create") }}
+        </div>
+
+    </form>
+    <!-- END MAIN FORM -->
+
+
+    {% if current_user.is_host and event %}
+
+    <!-- ADD RESOURCE FORM -->
     <h3 class="group-heading" style="margin-top: 22px;">Add Resource</h3>
 
     <form method="POST"
-        action="{{ url_for('events.add_resource', event_id=event.id) }}"
-        class="resource-add-form">
+          action="{{ url_for('events.add_resource', event_id=event.id) }}"
+          class="resource-add-form">
 
         {{ resource_form.hidden_tag() }}
 
@@ -75,12 +90,6 @@
     </form>
 
     {% endif %}
-
-        <div class="form-actions" style="margin-top: 30px;">
-            {{ form.submit(class_="btn btn-create") }}
-        </div>
-
-    </form>
 
     <p class="event-details-line" style="margin-top: 20px;">
         <a href="{{ url_for('events.events_list') }}">← Back to Events</a>

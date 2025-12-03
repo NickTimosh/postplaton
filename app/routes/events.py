@@ -133,7 +133,10 @@ def create_event():
         flash("Event created successfully!")
         return redirect(url_for("events.events_list"))
 
-    return render_template("event_form.html", form=form, title="Create Event")
+    return render_template(
+        "event_form.html", 
+        form=form, 
+        title="Create Event")
 
 
 # ----------------------------
@@ -161,7 +164,7 @@ def edit_event(event_id):
         db.session.commit()
         flash("Event updated successfully!")
 
-        return redirect(url_for("events.event_detail", event_id=event.id))
+        return redirect(url_for("events.events_list"))
 
     return render_template(
         "event_form.html", 
