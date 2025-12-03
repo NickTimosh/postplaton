@@ -1,41 +1,90 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
+<section class="events-page">
 
-    <h1>{{ title }}</h1>
+    <h1 class="page-title">{{ title }}</h1>
 
-    <form method="POST">
+    <form method="POST" class="event-form">
         {{ form.hidden_tag() }}
 
-        <p>
-            {{ form.title.label }}<br>
-            {{ form.title(size=50) }}
-        </p>
+        <div class="form-field">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-input") }}
+        </div>
 
-        <p>
-            {{ form.event_datetime.label }}<br>
-            {{ form.event_datetime(size=20) }}
-        </p>
+        <div class="form-field">
+            {{ form.event_datetime.label(class="form-label") }}
+            {{ form.event_datetime(class="form-input") }}
+        </div>
 
-        <p>
-            {{ form.host.label }}<br>
-            {{ form.host(size=50) }}
-        </p>
+        <div class="form-field">
+            {{ form.host.label(class="form-label") }}
+            {{ form.host(class="form-input") }}
+        </div>
 
-        <p>
-            {{ form.description.label }}<br>
-            {{ form.description(cols=50, rows=5) }}
-        </p>
+        <div class="form-field">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-textarea large-textarea") }}
+        </div>
 
-        <p>
-            {{ form.submit(class_="btn btn-create") }}
-        </p>
+    {% if current_user.is_host and event %}
+
+    <h2 class="group-heading">Resources</h2>
+
+    <div class="resource-list">
+        {% for resource in event.resources %}
+        <div class="resource-card">
+            <a href="{{ resource.url }}" target="_blank" class="resource-title">
+                {{ resource.title }}
+            </a>
+
+            <form action="{{ url_for('events.delete_resource', resource_id=resource.id) }}"
+                method="POST">
+                <button type="submit" class="icon-btn delete-btn" title="Delete">
+                    ✕
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <p class="event-details-line">No resources yet.</p>
+        {% endfor %}
+    </div>
+
+    <h3 class="group-heading" style="margin-top: 22px;">Add Resource</h3>
+
+    <form method="POST"
+        action="{{ url_for('events.add_resource', event_id=event.id) }}"
+        class="resource-add-form">
+
+        {{ resource_form.hidden_tag() }}
+
+        <div class="form-field">
+            {{ resource_form.title.label(class="form-label") }}
+            {{ resource_form.title(class="form-input") }}
+        </div>
+
+        <div class="form-field">
+            {{ resource_form.url.label(class="form-label") }}
+            {{ resource_form.url(class="form-input") }}
+        </div>
+
+        <button class="btn btn-secondary small" type="submit">
+            Add
+        </button>
     </form>
 
-    <p style="margin-top: 15px;">
+    {% endif %}
+
+        <div class="form-actions" style="margin-top: 30px;">
+            {{ form.submit(class_="btn btn-create") }}
+        </div>
+
+    </form>
+
+    <p class="event-details-line" style="margin-top: 20px;">
         <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
     </p>
 
-</div>
+</section>
 {% endblock %}

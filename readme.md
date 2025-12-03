@@ -42,6 +42,7 @@ Database notes:
 
 ```bash
 flask db migrate -m "Add EventResources table"
+flask db upgrade
 ```
 
 #### Step 7: Optionally: environmental variables

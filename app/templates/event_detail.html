@@ -3,29 +3,55 @@
 {% block content %}
 <section class="events-page">
 
-  <h1 class="page-title">{{ event.title }}</h1>
+    <h1 class="page-title">{{ event.title }}</h1>
 
-  <p><strong>Date:</strong> {{ event.event_datetime.strftime('%A, %d %B %Y, %H:%M') }}</p>
-  <p><strong>Host:</strong> {{ event.host }}</p>
-  <p><strong>Description:</strong><br>{{ event.description|replace('\n','<br>')|safe }}</p>
+    <div class="event-details-block">
 
-    {% if current_user.is_authenticated and current_user.is_host %}
-    <div class="event-actions" style="margin-top: 20px;">
-        <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit small">
-             Edit 
-        </a>
+        <p class="event-details-line">
+            <strong>Date:</strong>
+            {{ event.event_datetime.strftime('%A, %d %B %Y, %H:%M') }}
+        </p>
 
-        <form method="POST"
-            action="{{ url_for('events.delete_event', event_id=event.id) }}"
-            style="display:inline;">
-            <button type="submit" class="btn btn-delete small">Delete</button>
-        </form>
+        <p class="event-details-line">
+            <strong>Host:</strong> {{ event.host }}
+        </p>
+
+        <p class="event-details-description">
+            {{ event.description | replace('\n','<br>') | safe }}
+        </p>
+
+        {% if current_user.is_authenticated and current_user.is_host %}
+        <div class="event-details-actions">
+            <a href="{{ url_for('events.edit_event', event_id=event.id) }}"
+               class="btn small btn-edit">Edit</a>
+
+            <form method="POST"
+                  action="{{ url_for('events.delete_event', event_id=event.id) }}"
+                  class="inline-form">
+                <button type="submit" class="btn small btn-delete">Delete</button>
+            </form>
+        </div>
+        {% endif %}
+
     </div>
+
+    <h2 class="group-heading">Resources</h2>
+
+    {% if event.resources %}
+    <ul class="resource-list">
+        {% for resource in event.resources %}
+        <li class="resource-item">
+            <a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="event-details-line">No resources yet.</p>
     {% endif %}
 
-  <p style="margin-top: 25px;">
-      <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
-  </p>
+    <p class="event-details-line" style="margin-top: 26px;">
+        <a href="{{ url_for('events.events_list') }}">← Back to Events</a>
+    </p>
 
 </section>
 {% endblock %}

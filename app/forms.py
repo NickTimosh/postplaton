@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, PasswordField, DateTimeLocalField
-from wtforms.validators import DataRequired
-from wtforms.fields import DateField
+from wtforms.validators import DataRequired, URL
 
 class HostLoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -14,3 +13,8 @@ class EventForm(FlaskForm):
     host = StringField("Host", validators=[DataRequired()])
     description = TextAreaField("Description")
     submit = SubmitField("Save")
+
+class EventResourceForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    url = StringField("URL", validators=[DataRequired(), URL()])
+    submit = SubmitField("Add Resource")
