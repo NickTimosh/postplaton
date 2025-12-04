@@ -220,4 +220,4 @@ def delete_event(event_id):
     db.session.commit()
 
     flash("Event deleted successfully!")
-    return redirect(url_for("events.events_list"))
+    return redirect(url_for("events.past_events"))

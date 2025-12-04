@@ -12,9 +12,8 @@
     <div class="topnav-inner">
       <a href="/">Home</a>
       <a href="/events">Events</a>
-      <a href="{{ url_for('events.past_events') }}">Past Events</a>
       <a href="{{ url_for('resources.resources_list') }}">Resources</a>
-
+      <a href="{{ url_for('events.past_events') }}">Archive</a>
       <div class="spacer"></div>
 
       {% if current_user.is_authenticated %}
