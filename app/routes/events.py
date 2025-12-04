@@ -152,7 +152,6 @@ def edit_event(event_id):
     event = Event.query.get_or_404(event_id)
 
     form = EventForm(obj=event)
-    resource_form = EventResourceForm()
 
     if form.validate_on_submit():
 
@@ -169,7 +168,6 @@ def edit_event(event_id):
     return render_template(
         "event_form.html", 
         form=form, 
-        resource_form=resource_form,
         title="Edit Event",
         event=event
     )
@@ -192,47 +190,3 @@ def delete_event(event_id):
 
     flash("Event deleted successfully!")
     return redirect(url_for("events.events_list"))
-
-# ----------------------------
-# Add Resources
-# ----------------------------
-@events_bp.route("/<int:event_id>/add_resource", methods=["POST"])
-@login_required
-def add_resource(event_id):
-    event = Event.query.get_or_404(event_id)
-
-    if not current_user.is_host:
-        abort(403)
-
-    form = EventResourceForm()
-    if form.validate_on_submit():
-        resource = EventResource(
-            title=form.title.data,
-            url=form.url.data,
-            event_id=event.id
-        )
-        db.session.add(resource)
-        db.session.commit()
-        flash("Resource added!", "success")
-    else:
-        flash("Failed to add resource. Check your input.", "danger")
-
-    return redirect(url_for("events.edit_event", event_id=event.id))
-
-# ----------------------------
-# Delete Resources
-# ----------------------------
-@events_bp.route("/delete_resource/<int:resource_id>", methods=["POST"])
-@login_required
-def delete_resource(resource_id):
-    resource = EventResource.query.get_or_404(resource_id)
-    event = resource.event
-
-    if not current_user.is_host:
-        abort(403)
-
-    db.session.delete(resource)
-    db.session.commit()
-    flash("Resource deleted!", "success")
-
-    return redirect(url_for("events.edit_event", event_id=event.id))
