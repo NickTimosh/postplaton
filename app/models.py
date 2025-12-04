@@ -28,13 +28,13 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"<User {self.username}, host={self.is_host}>"
     
-class EventResource(db.Model):
+class Resource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=True)
     title = db.Column(db.String(200), nullable=False)
     url = db.Column(db.String(500), nullable=False)
 
     event = db.relationship('Event', backref=db.backref('resources', lazy=True, cascade="all, delete-orphan"))
 
     def __repr__(self):
-        return f"<EventResource {self.title} for Event {self.event_id}>"
+        return f"<Resource {self.title} for Event {self.event_id}>"

@@ -3,8 +3,6 @@ from datetime import date, datetime, timedelta
 from app.models import Event
 from app import db
 from app.forms import EventForm
-from app.forms import EventResourceForm 
-from app.models import EventResource
 from flask_login import login_required, current_user
 
 events_bp = Blueprint("events", __name__, url_prefix="/events")

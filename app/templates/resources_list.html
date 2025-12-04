@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="page-title">Resources</h1>
+{% if current_user.is_authenticated and current_user.is_host %}
+    <p>
+        <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
+            + Add Resource
+        </a>
+    </p>
+{% endif %}
+<section class="resources-list">
+    {% for resource in resources %}
+    <div class="resource-card">
+
+        <a href="{{ resource.url }}" target="_blank" class="resource-title">
+            {{ resource.title }}
+        </a>
+
+        {% if current_user.is_authenticated and current_user.is_host %}
+        <form action="{{ url_for('resources.delete_resource', resource_id=resource.id) }}"
+              method="POST">
+            <button class="icon-btn delete-btn">✕</button>
+        </form>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>No resources yet.</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

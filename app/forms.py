@@ -14,7 +14,7 @@ class EventForm(FlaskForm):
     description = TextAreaField("Description")
     submit = SubmitField("Save")
 
-class EventResourceForm(FlaskForm):
+class ResourceForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     url = StringField("URL", validators=[DataRequired(), URL()])
-    submit = SubmitField("Add Resource")
+    submit = SubmitField("Save")
