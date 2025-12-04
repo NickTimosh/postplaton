@@ -2,7 +2,7 @@ from . import db
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from app.tag_icons import EVENT_TAG_ICONS, RESOURCE_TAG_ICONS
 # -------------------------------------------------------
 # Association Tables (M2M)
 # -------------------------------------------------------
@@ -26,6 +26,8 @@ resource_resourcetag = db.Table(
 class EventTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    icon = db.Column(db.String(10), nullable=True)  # <-- add this column
+
 
     def __repr__(self):
         return f"<EventTag {self.name}>"
@@ -37,6 +39,7 @@ class EventTag(db.Model):
 class ResourceTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    icon = db.Column(db.String(10), nullable=True)  # <-- add this column
 
     def __repr__(self):
         return f"<ResourceTag {self.name}>"
@@ -97,12 +100,13 @@ class Resource(db.Model):
         backref=db.backref("resources", lazy=True, cascade="all, delete-orphan")
     )
 
-    # Tags
-    tags = db.relationship(
-        "ResourceTag",
-        secondary=resource_resourcetag,
-        backref=db.backref("resources", lazy="dynamic")
-    )
+   # tag
+    tag_id = db.Column(
+        db.Integer,
+        db.ForeignKey('resource_tag.id', name="fk_resource_tag_id"),  # constraint name here
+        nullable=True
+    )    
+    tag = db.relationship("ResourceTag", backref=db.backref("resources", lazy=True))
 
     def __repr__(self):
         return f"<Resource {self.title}>"

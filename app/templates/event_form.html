@@ -28,6 +28,11 @@
             {{ form.description(class="form-textarea large-textarea") }}
         </div>
 
+        <div class="form-field">
+            {{ form.tags.label(class="form-label") }}
+            {{ form.tags(class="form-input") }}
+        </div>
+        
         <!-- SAVE BUTTON (NOW WORKS) -->
         <div class="form-actions" style="margin-top: 30px;">
             {{ form.submit(class_="btn btn-create") }}

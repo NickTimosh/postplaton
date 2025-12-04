@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from datetime import date, datetime, timedelta
-from app.models import Event
+from app.models import Event, EventTag
 from app import db
 from app.forms import EventForm
 from flask_login import login_required, current_user
@@ -115,6 +115,7 @@ def create_event():
         abort(403)
 
     form = EventForm()
+    form.set_tag_choices()
 
     if form.validate_on_submit():
 
@@ -124,6 +125,10 @@ def create_event():
             host=form.host.data,
             description=form.description.data,
         )
+
+        # Set tags
+        selected_tags = EventTag.query.get(form.tags.data)
+        new_event.tags = selected_tags
 
         db.session.add(new_event)
         db.session.commit()

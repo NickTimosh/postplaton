@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, SelectField, PasswordField, DateTimeLocalField
-from wtforms.validators import DataRequired, URL
-from app.models import Event
+from wtforms import StringField, TextAreaField, SubmitField, SelectField, PasswordField, DateTimeLocalField, SelectMultipleField
+from wtforms.validators import DataRequired, URL, Optional
+from app.models import Event,EventTag, ResourceTag
 
 class HostLoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -13,12 +13,25 @@ class EventForm(FlaskForm):
     event_datetime = DateTimeLocalField("Event Time",format="%Y-%m-%dT%H:%M",validators=[DataRequired()])
     host = StringField("Host", validators=[DataRequired()])
     description = TextAreaField("Description")
+
+    # Multi-select for event tags
+    tags = SelectMultipleField(
+        "Topics (Tags)",
+        coerce=int,   # important: ID values must be ints
+        validators=[Optional()]
+    )
+
     submit = SubmitField("Save")
 
 class ResourceForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     url = StringField("URL", validators=[DataRequired(), URL()])
-    event_id = SelectField("Related Event", coerce=int, default=0)
+    event_id = SelectField("Link to Event (optional)", coerce=int, default=0)
+
+    # Single tag
+    tag = SelectField("Category", coerce=int, validators=[DataRequired()])
+    
+
     submit = SubmitField("Save")
 
     def set_event_choices(self):
@@ -27,3 +40,6 @@ class ResourceForm(FlaskForm):
             (e.id, f"{e.title} — {e.event_datetime.strftime('%Y-%m-%d')}")
             for e in events
         ]
+
+        tags = ResourceTag.query.order_by(ResourceTag.name).all()
+        self.tag.choices = [(tag.id, tag.name) for tag in tags]
