@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1 class="page-title">Add Resource</h1>
+
+<form method="POST" class="event-form">
+    {{ form.hidden_tag() }}
+
+    <div class="form-field">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-input") }}
+    </div>
+
+    <div class="form-field">
+        {{ form.url.label(class="form-label") }}
+        {{ form.url(class="form-input") }}
+    </div>
+
+    <div class="form-field">
+        {{ form.event_id.label(class="form-label") }}
+        {{ form.event_id(class="form-input") }}
+    </div>
+
+    <div class="form-actions">
+        {{ form.submit(class="btn btn-create") }}
+    </div>
+</form>
+
+<p class="event-details-line">
+    <br>
+    <a href="{{ url_for('resources.resources_list') }}">← Back to Resources</a>
+</p>
+
+{% endblock %}

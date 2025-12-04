@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField, DateTimeLocalField
+from wtforms import StringField, TextAreaField, SubmitField, SelectField, PasswordField, DateTimeLocalField
 from wtforms.validators import DataRequired, URL
+from app.models import Event
 
 class HostLoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -14,7 +15,15 @@ class EventForm(FlaskForm):
     description = TextAreaField("Description")
     submit = SubmitField("Save")
 
-class EventResourceForm(FlaskForm):
+class ResourceForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     url = StringField("URL", validators=[DataRequired(), URL()])
-    submit = SubmitField("Add Resource")
+    event_id = SelectField("Related Event", coerce=int, default=0)
+    submit = SubmitField("Save")
+
+    def set_event_choices(self):
+        events = Event.query.order_by(Event.event_datetime.desc()).all()
+        self.event_id.choices = [(0, "— No event —")] + [
+            (e.id, f"{e.title} — {e.event_datetime.strftime('%Y-%m-%d')}")
+            for e in events
+        ]
