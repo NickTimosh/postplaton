@@ -5,6 +5,11 @@
 
     <h1 class="page-title">{{ event.title }}</h1>
 
+    <p class="event-detail-tag">
+        <span class="tag-icon">{{ event.tag.icon or '🤔' }}</span>
+        <span class="tag-name">{{ event.tag.name }}</span>
+    </p>
+
     <div class="event-details-block">
 
         <p class="event-details-line">

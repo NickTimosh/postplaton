@@ -171,7 +171,7 @@ body {
 
 .event-title a {
   color:#1f2937;
-  text-decoration:none;
+  text-decoration:underline;
   font-weight:800;
 }
 
@@ -470,4 +470,28 @@ body {
 .btn-secondary.small:hover {
   filter: brightness(90%);
   transition: 0.2s ease-in-out;
+}
+
+.event-tag {
+  background-color: #eef3f8;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.75em;
+  margin-right: 6px;
+  margin-left: 12px;
+}
+
+.event-detail-tag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 6px; 
+    border-radius: 10px;
+    vertical-align: middle;
+}
+
+.event-detail-tag .tag-icon {
+    font-size: 16px;
 }
