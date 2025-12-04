@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app import db
 from app.models import Resource, ResourceTag
 from app.forms import ResourceForm
+from urllib.parse import urlparse
 
 resources_bp = Blueprint("resources", __name__, template_folder="../templates")
 
@@ -12,6 +13,7 @@ resources_bp = Blueprint("resources", __name__, template_folder="../templates")
 @resources_bp.route("/resources")
 def resources_list():
     resources = Resource.query.order_by(Resource.id.desc())
+        
     return render_template("resources_list.html", resources=resources)
 
 # ----------------------------
@@ -26,17 +28,19 @@ def add_resource():
 
     if form.validate_on_submit():
         event_id = form.event_id.data if form.event_id.data != 0 else None
-        
+    
+    parsed_url = urlparse(form.url.data)
+    domain = parsed_url.netloc
+
     if form.validate_on_submit():
         
         resource = Resource(
             title=form.title.data,
             url=form.url.data,
-            event_id=event_id
+            event_id=event_id,
+            domain=domain,
+            tag_id=form.tag.data
         )
-
-        # Assign single tag
-        resource.tag_id = form.tag.data
         
         db.session.add(resource)
         db.session.commit()

@@ -2,6 +2,7 @@
 {% block content %}
 
 <h1 class="page-title">Resources</h1>
+
 {% if current_user.is_authenticated and current_user.is_host %}
     <p>
         <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
@@ -9,20 +10,41 @@
         </a>
     </p>
 {% endif %}
+
 <section class="resources-list">
     {% for resource in resources %}
     <div class="resource-card">
 
+        <!-- Resource title -->
         <a href="{{ resource.url }}" target="_blank" class="resource-title">
             {{ resource.title }}
         </a>
 
+        <!-- Resource domain -->
+        <span class="resource-domain">({{ resource.domain }})</span>     
+
+        <!-- Resource tag -->
+        {% if resource.tag %}
+        <span class="resource-tag">
+            {{ resource.tag.icon or '' }} {{ resource.tag.name }}
+        </span>
+        {% endif %}
+
+        <!-- Linked Event tag -->
+        {% if resource.event and resource.event.tag %}
+        <span class="event-tag">
+            {{ resource.event.tag.icon or '' }} {{ resource.event.tag.name }}
+        </span>
+        {% endif %}
+
+        <!-- Delete button for hosts -->
         {% if current_user.is_authenticated and current_user.is_host %}
         <form action="{{ url_for('resources.delete_resource', resource_id=resource.id) }}"
-              method="POST">
+              method="POST" style="display:inline;">
             <button class="icon-btn delete-btn">✕</button>
         </form>
         {% endif %}
+
     </div>
     {% else %}
     <p>No resources yet.</p>

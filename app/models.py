@@ -79,6 +79,7 @@ class Resource(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=True)
     title = db.Column(db.String(200), nullable=False)
     url = db.Column(db.String(500), nullable=False)
+    domain = db.Column(db.String(200), nullable=True)
 
     # Relationship to event
     event = db.relationship(
