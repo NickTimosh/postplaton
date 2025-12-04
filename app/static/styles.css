@@ -647,7 +647,7 @@ body {
 .resource-title {
     font-weight: 600;
     font-size: 1rem;
-    text-decoration: none;
+    text-decoration: underline;
     color: #333;
 }
 

@@ -12,9 +12,16 @@ resources_bp = Blueprint("resources", __name__, template_folder="../templates")
 # ----------------------------
 @resources_bp.route("/resources")
 def resources_list():
-    resources = Resource.query.order_by(Resource.id.desc())
-        
-    return render_template("resources_list.html", resources=resources)
+    page = request.args.get("page", 1, type=int)      
+    pagination = Resource.query.order_by(Resource.id.desc()).paginate(
+        page=page,
+        per_page=10,
+        error_out=False
+    )
+
+    return render_template("resources_list.html", 
+                           resources=pagination.items,
+                           pagination=pagination)
 
 # ----------------------------
 # Create resource
