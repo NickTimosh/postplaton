@@ -3,21 +3,6 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.tag_icons import EVENT_TAG_ICONS, RESOURCE_TAG_ICONS
-# -------------------------------------------------------
-# Association Tables (M2M)
-# -------------------------------------------------------
-
-event_eventtag = db.Table(
-    "event_eventtag",
-    db.Column("event_id", db.Integer, db.ForeignKey("event.id"), primary_key=True),
-    db.Column("tag_id", db.Integer, db.ForeignKey("event_tag.id"), primary_key=True)
-)
-
-resource_resourcetag = db.Table(
-    "resource_resourcetag",
-    db.Column("resource_id", db.Integer, db.ForeignKey("resource.id"), primary_key=True),
-    db.Column("tag_id", db.Integer, db.ForeignKey("resource_tag.id"), primary_key=True)
-)
 
 # -------------------------------------------------------
 # Event Tags (topics: art, music, history)
@@ -25,8 +10,8 @@ resource_resourcetag = db.Table(
 
 class EventTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    icon = db.Column(db.String(10), nullable=True)  # <-- add this column
+    name = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    icon = db.Column(db.String(10), nullable=True) 
 
 
     def __repr__(self):
@@ -38,8 +23,8 @@ class EventTag(db.Model):
 
 class ResourceTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    icon = db.Column(db.String(10), nullable=True)  # <-- add this column
+    name = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    icon = db.Column(db.String(10), nullable=True)
 
     def __repr__(self):
         return f"<ResourceTag {self.name}>"
@@ -55,12 +40,13 @@ class Event(db.Model):
     host = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
 
-    # Tags
-    tags = db.relationship(
-        "EventTag",
-        secondary=event_eventtag,
-        backref=db.backref("events", lazy="dynamic")
-    )
+    # Single tag
+    tag_id = db.Column(
+        db.Integer,
+        db.ForeignKey('event_tag.id', name="fk_event_tag_id"),
+        nullable=True
+    )    
+    tag = db.relationship("EventTag", backref=db.backref("events", lazy='dynamic'))
 
     def __repr__(self):
         return f"<Event {self.title}>"
@@ -103,10 +89,10 @@ class Resource(db.Model):
    # tag
     tag_id = db.Column(
         db.Integer,
-        db.ForeignKey('resource_tag.id', name="fk_resource_tag_id"),  # constraint name here
+        db.ForeignKey('resource_tag.id', name="fk_resource_tag_id"),
         nullable=True
     )    
-    tag = db.relationship("ResourceTag", backref=db.backref("resources", lazy=True))
+    tag = db.relationship("ResourceTag", backref=db.backref("resources", lazy='dynamic'))
 
     def __repr__(self):
         return f"<Resource {self.title}>"

@@ -14,6 +14,15 @@
     <div class="form-field">
         {{ form.url.label(class="form-label") }}
         {{ form.url(class="form-input") }}
+
+        {% if form.url.errors %}
+            <ul class="form-errors">
+                {% for error in form.url.errors %}
+                    Error: {{ error }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
     </div>
 
     <div class="form-field">

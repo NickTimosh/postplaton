@@ -15,9 +15,9 @@ class EventForm(FlaskForm):
     description = TextAreaField("Description")
 
     # Multi-select for event tags
-    tags = SelectMultipleField(
+    tag = SelectField(
         "Topics (Tags)",
-        coerce=int,   # important: ID values must be ints
+        coerce=int, 
         validators=[Optional()]
     )
 

@@ -115,7 +115,9 @@ def create_event():
         abort(403)
 
     form = EventForm()
-    form.set_tag_choices()
+    form.tag.choices = [
+        (t.id, f"{t.icon or ''} {t.name}") for t in EventTag.query.order_by(EventTag.name).all()
+    ]
 
     if form.validate_on_submit():
 
@@ -127,8 +129,7 @@ def create_event():
         )
 
         # Set tags
-        selected_tags = EventTag.query.get(form.tags.data)
-        new_event.tags = selected_tags
+        new_event.tag = EventTag.query.get(form.tag.data) if form.tag.data != 0 else None
 
         db.session.add(new_event)
         db.session.commit()
@@ -156,12 +157,24 @@ def edit_event(event_id):
 
     form = EventForm(obj=event)
 
+    # Populate tag choices
+    form.tag.choices =  [
+        (t.id, f"{t.icon or ''} {t.name}") for t in EventTag.query.order_by(EventTag.name).all()
+    ]
+
+    # Pre-select current tag
+    if request.method == "GET" and event.tag:
+        form.tag.data = event.tag.id
+
     if form.validate_on_submit():
 
         event.title = form.title.data
         event.event_datetime = form.event_datetime.data
         event.host = form.host.data
         event.description = form.description.data
+
+        # Update tag
+        event.tag = EventTag.query.get(form.tag.data) if form.tag.data != 0 else None
 
         db.session.commit()
         flash("Event updated successfully!")
