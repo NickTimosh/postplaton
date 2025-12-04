@@ -495,3 +495,185 @@ body {
 .event-detail-tag .tag-icon {
     font-size: 16px;
 }
+
+/* The resource card container */
+.resource-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* LEFT SIDE */
+.resource-main {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title link */
+.resource-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0054d6;
+    text-decoration: underline;
+    margin-bottom: 4px;
+}
+
+.resource-title:hover {
+    text-decoration: none;
+}
+
+/* Domain badge */
+.resource-domain {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #eef2ff;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #4b4b4b;
+    margin-right: 8px;
+}
+
+.resource-domain.none {
+    color: #aaaaaa;
+    font-style: italic;
+}
+
+/* RIGHT SIDE tags + delete */
+.resource-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Resource tag */
+.resource-tag,
+.event-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    background: #e8f7ff;
+    color: #006b99;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Event tag styling variation */
+.event-tag {
+    background: #fff4e5;
+    color: #c26000;
+}
+
+/* Delete button */
+.inline-delete {
+    margin: 0;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    padding: 4px 6px;
+}
+
+.delete-btn:hover {
+    background: #fecaca;
+}
+
+.resource-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* right aligned */
+    gap: 8px;
+}
+
+.resource-tags-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+/* Appearance of topic (event tag) */
+.event-tag-badge {
+    background: #e7f0ff;
+    color: #2463eb;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Appearance of category (resource tag) */
+.resource-tag-badge {
+    background: #f3f4f6;
+    color: #444;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.resource-list.detailed {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.resource-item.detailed {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.resource-line {
+    display: flex;
+    flex-direction: column;
+}
+
+.resource-title {
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #333;
+}
+
+.resource-title:hover {
+    text-decoration: underline;
+}
+
+.resource-meta {
+    margin-top: 4px;
+    display: flex;
+    gap: 12px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.resource-domain {
+    opacity: 0.8;
+}
+
+.resource-domain.none {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.resource-tag {
+    background: #f3f3f3;
+    padding: 3px 8px;
+    border-radius: 6px;
+}

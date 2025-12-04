@@ -40,19 +40,45 @@
 
     </div>
 
-    <h2 class="group-heading">Resources</h2>
+<h2 class="group-heading">Resources</h2>
 
-    {% if event.resources %}
-    <ul class="resource-list">
-        {% for resource in event.resources %}
-        <li class="resource-item">
-            <a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p class="event-details-line">No resources yet.</p>
-    {% endif %}
+{% if event.resources %}
+<ul class="resource-list detailed">
+
+    {% for resource in event.resources %}
+    <li class="resource-item detailed">
+
+        <div class="resource-line">
+            <a href="{{ resource.url }}" target="_blank" class="resource-title">
+                {{ resource.title }}
+            </a>
+
+            <div class="resource-meta">
+
+                {# DOMAIN #}
+                {% if resource.domain %}
+                    <span class="resource-domain">{{ resource.domain }}</span>
+                {% else %}
+                    <span class="resource-domain none">(no domain)</span>
+                {% endif %}
+
+                {# RESOURCE TAG #}
+                {% if resource.tag %}
+                    <span class="resource-tag">
+                        {{ resource.tag.icon }} {{ resource.tag.name }}
+                    </span>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </li>
+    {% endfor %}
+
+</ul>
+{% else %}
+<p class="event-details-line">No resources yet.</p>
+{% endif %}
 
     <p class="event-details-line" style="margin-top: 26px;">
         <a href="{{ url_for('events.events_list') }}">← Back to Events</a>

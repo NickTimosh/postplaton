@@ -4,51 +4,69 @@
 <h1 class="page-title">Resources</h1>
 
 {% if current_user.is_authenticated and current_user.is_host %}
-    <p>
-        <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
-            + Add Resource
-        </a>
-    </p>
+<p>
+    <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
+        + Add Resource
+    </a>
+</p>
 {% endif %}
 
 <section class="resources-list">
+
     {% for resource in resources %}
+
     <div class="resource-card">
+        
+        <!-- TITLE + DOMAIN -->
+        <div class="resource-main">
+            <a href="{{ resource.url }}" target="_blank" class="resource-title">
+                {{ resource.title }}
+            </a>
 
-        <!-- Resource title -->
-        <a href="{{ resource.url }}" target="_blank" class="resource-title">
-            {{ resource.title }}
-        </a>
+            <div class="resource-meta">
 
-        <!-- Resource domain -->
-        <span class="resource-domain">({{ resource.domain }})</span>     
+                {% if resource.domain %}
+                <span class="resource-domain">
+                    {{ resource.domain }}
+                </span>
+                {% else %}
+                <span class="resource-domain none">(None)</span>
+                {% endif %}
+            </div>
+        </div>
 
-        <!-- Resource tag -->
-        {% if resource.tag %}
-        <span class="resource-tag">
-            {{ resource.tag.icon or '' }} {{ resource.tag.name }}
-        </span>
-        {% endif %}
+    <!-- RIGHT SIDE: EVENT TAG (topic) ABOVE RESOURCE TAG (category) -->
+    <div class="resource-right">
 
-        <!-- Linked Event tag -->
-        {% if resource.event and resource.event.tag %}
-        <span class="event-tag">
-            {{ resource.event.tag.icon or '' }} {{ resource.event.tag.name }}
-        </span>
-        {% endif %}
+        <div class="resource-tags-column">
 
-        <!-- Delete button for hosts -->
         {% if current_user.is_authenticated and current_user.is_host %}
         <form action="{{ url_for('resources.delete_resource', resource_id=resource.id) }}"
-              method="POST" style="display:inline;">
+            method="POST" class="inline-delete">
             <button class="icon-btn delete-btn">✕</button>
         </form>
         {% endif %}
 
-    </div>
-    {% else %}
-    <p>No resources yet.</p>
-    {% endfor %}
-</section>
+            {% if resource.tag %}
+            <span class="resource-tag-badge">
+                {{ resource.tag.icon }} {{ resource.tag.name }}
+            </span>
+            {% endif %}
 
+            {% if resource.event and resource.event.tag %}
+            <span class="event-tag-badge">
+                {{ resource.event.tag.icon }} {{ resource.event.tag.name }}
+            </span>
+            {% endif %}
+        </div>
+
+    </div>
+
+    </div>
+
+    {% else %}
+        <p>No resources yet.</p>
+    {% endfor %}
+
+</section>
 {% endblock %}
