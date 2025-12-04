@@ -15,11 +15,16 @@ def resources_list():
 @resources_bp.route("/resources/add", methods=["GET", "POST"])
 def add_resource():
     form = ResourceForm()
+    form.set_event_choices()
 
+    if form.validate_on_submit():
+        event_id = form.event_id.data if form.event_id.data != 0 else None
+        
     if form.validate_on_submit():
         resource = Resource(
             title=form.title.data,
             url=form.url.data,
+            event_id=event_id
         )
         db.session.add(resource)
         db.session.commit()
