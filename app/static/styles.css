@@ -677,3 +677,16 @@ body {
     padding: 3px 8px;
     border-radius: 6px;
 }
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.filter-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}

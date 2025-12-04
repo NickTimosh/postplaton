@@ -65,30 +65,45 @@ def events_list():
 def past_events():
 
     page = request.args.get("page", 1, type=int)
-    per_page = 10  # simplest choice
+    per_page = 10
+
+    tag_id = request.args.get("tag_id", type=int)
 
     today = datetime.now()
 
-    # Query only needed rows per page
-    pagination = (
+    query = (
         Event.query
         .filter(Event.event_datetime < today)
         .order_by(Event.event_datetime.desc())
-        .paginate(page=page, per_page=per_page, error_out=False)
+    )
+
+    # --- NEW FILTER ---
+    if tag_id:
+        query = query.filter(Event.tag_id == tag_id)
+
+    pagination = query.paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False,
     )
 
     events = pagination.items
 
-    # Compute end time for calendar links
+    # Compute end time
     for e in events:
         e.local_dt = e.event_datetime
         e.end_dt = e.local_dt + timedelta(hours=2)
+
+    # Tag list for filter dropdown
+    all_tags = EventTag.query.order_by(EventTag.name).all()
 
     return render_template(
         "past_events.html",
         title="Past Events",
         events=events,
-        pagination=pagination
+        pagination=pagination,
+        all_tags=all_tags,
+        tag_id=tag_id
     )
 
 # ----------------------------

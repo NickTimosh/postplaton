@@ -4,6 +4,18 @@
 <section class="events-page">
   <h1 class="page-title">{{ title }}</h1>
 
+  <form method="get" class="filter-bar">
+    <select name="tag_id" class="filter-select" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        {% for tag in all_tags %}
+          <option value="{{ tag.id }}"
+                  {% if tag_id == tag.id %}selected{% endif %}>
+            {{ tag.icon }} {{ tag.name }}
+          </option>
+        {% endfor %}
+    </select>
+  </form>
+
   <div class="events-list">
     {% for event in events %}
     <article class="past-event-item">
@@ -47,19 +59,26 @@
     {% endfor %}
   </div>
 
-  {% if pagination %}
-    <div class="pagination">
-      {% if pagination.has_prev %}
-        <a href="{{ url_for('events.past_events', page=pagination.prev_num) }}">Previous</a>
-      {% endif %}
-
-      <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
-
-      {% if pagination.has_next %}
-        <a href="{{ url_for('events.past_events', page=pagination.next_num) }}">Next</a>
-      {% endif %}
-    </div>
+<div class="pagination">
+  {% if pagination.has_prev %}
+    <a href="{{ url_for('events.past_events',
+            page=pagination.prev_num,
+            tag_id=tag_id
+        ) }}">
+      Previous
+    </a>
   {% endif %}
 
+  <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+  {% if pagination.has_next %}
+    <a href="{{ url_for('events.past_events',
+            page=pagination.next_num,
+            tag_id=tag_id
+        ) }}">
+      Next
+    </a>
+  {% endif %}
+</div>
 </section>
 {% endblock %}
