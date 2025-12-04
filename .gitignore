@@ -22,3 +22,4 @@ Thumbs.db
 
 create_admin.py
 reset_password.py
+seed_tags.py

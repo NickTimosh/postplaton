@@ -34,6 +34,7 @@
           <div class="event-main">
             <h3 class="event-title">
               <a href="{{ url_for('events.event_detail', event_id=event.id) }}">{{ event.title }}</a>
+              <span class="event-tag">{{ event.tag.icon or '🤔' }} {{ event.tag.name }}</span>
             </h3>
 
             <p class="event-desc">{{ event.description }}</p>

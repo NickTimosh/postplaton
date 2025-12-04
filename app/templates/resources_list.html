@@ -1,32 +1,122 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1 class="page-title">Resources</h1>
-{% if current_user.is_authenticated and current_user.is_host %}
-    <p>
-        <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
-            + Add Resource
-        </a>
-    </p>
-{% endif %}
-<section class="resources-list">
-    {% for resource in resources %}
-    <div class="resource-card">
+<section class="events-page">
 
-        <a href="{{ resource.url }}" target="_blank" class="resource-title">
-            {{ resource.title }}
-        </a>
+  <h1 class="page-title">Resources</h1>
 
-        {% if current_user.is_authenticated and current_user.is_host %}
-        <form action="{{ url_for('resources.delete_resource', resource_id=resource.id) }}"
-              method="POST">
-            <button class="icon-btn delete-btn">✕</button>
-        </form>
+  {% if current_user.is_authenticated and current_user.is_host %}
+  <p>
+      <a href="{{ url_for('resources.add_resource') }}" class="btn btn-create">
+          + Add Resource
+      </a>
+  </p>
+  {% endif %}
+
+  <form method="get" class="filter-bar">
+
+
+    <!-- Resource Tag filter -->
+    <select name="tag_id" class="filter-select" onchange="this.form.submit()">
+        <option value="">All Resources</option>
+        {% for tag in all_resource_tags %}
+            <option value="{{ tag.id }}" {% if tag_id == tag.id %}selected{% endif %}>
+                {{ tag.icon }} {{ tag.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <!-- Event Tag filter -->
+    <select name="event_tag" class="filter-select" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        {% for tag in all_event_tags %}
+            <option value="{{ tag.id }}" {% if event_tag_id == tag.id %}selected{% endif %}>
+                {{ tag.icon }} {{ tag.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+</form>
+
+  <section class="resources-list">
+
+      {% for resource in resources %}
+
+      <div class="resource-card">
+          
+          <!-- TITLE + DOMAIN -->
+          <div class="resource-main">
+              <a href="{{ resource.url }}" target="_blank" class="resource-title">
+                  {{ resource.title }}
+              </a>
+
+              <div class="resource-meta">
+
+                  {% if resource.domain %}
+                  <span class="resource-domain">
+                      {{ resource.domain }}
+                  </span>
+                  {% else %}
+                  <span class="resource-domain none">(None)</span>
+                  {% endif %}
+              </div>
+          </div>
+
+          <!-- RIGHT SIDE: EVENT TAG ABOVE RESOURCE TAG -->
+          <div class="resource-right">
+
+              <div class="resource-tags-column">
+
+                  {% if current_user.is_authenticated and current_user.is_host %}
+                  <form action="{{ url_for('resources.delete_resource', resource_id=resource.id) }}"
+                      method="POST" class="inline-delete">
+                      <button class="icon-btn delete-btn">✕</button>
+                  </form>
+                  {% endif %}
+
+                  {% if resource.tag %}
+                  <span class="resource-tag-badge">
+                      {{ resource.tag.icon }} {{ resource.tag.name }}
+                  </span>
+                  {% endif %}
+
+                  {% if resource.event and resource.event.tag %}
+                  <span class="event-tag-badge">
+                      {{ resource.event.tag.icon }} {{ resource.event.tag.name }}
+                  </span>
+                  {% endif %}
+              </div>
+
+          </div>
+
+      </div>
+
+      {% else %}
+          <p>No resources yet.</p>
+      {% endfor %}
+
+        <div class="pagination">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('resources.resources_list', 
+                page=pagination.prev_num,
+                tag_id=tag_id, 
+                event_tag=event_tag_id
+            ) }}">Previous</a>
         {% endif %}
-    </div>
-    {% else %}
-    <p>No resources yet.</p>
-    {% endfor %}
+
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+        {% if pagination.has_next %}
+            <a href="{{ url_for('resources.resources_list', 
+                page=pagination.next_num,
+                tag_id=tag_id,
+                event_tag=event_tag_id
+            ) }}">Next</a>
+        {% endif %}
+        </div>
+
+  </section>
+
 </section>
 
 {% endblock %}

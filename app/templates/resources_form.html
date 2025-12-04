@@ -14,11 +14,25 @@
     <div class="form-field">
         {{ form.url.label(class="form-label") }}
         {{ form.url(class="form-input") }}
+
+        {% if form.url.errors %}
+            <ul class="form-errors">
+                {% for error in form.url.errors %}
+                    Error: {{ error }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
     </div>
 
     <div class="form-field">
         {{ form.event_id.label(class="form-label") }}
         {{ form.event_id(class="form-input") }}
+    </div>
+
+    <div class="form-field">
+        {{ form.tag.label(class="form-label") }}
+        {{ form.tag(class="form-input") }}
     </div>
 
     <div class="form-actions">

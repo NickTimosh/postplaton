@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from datetime import date, datetime, timedelta
-from app.models import Event
+from app.models import Event, EventTag
 from app import db
 from app.forms import EventForm
 from flask_login import login_required, current_user
@@ -65,30 +65,45 @@ def events_list():
 def past_events():
 
     page = request.args.get("page", 1, type=int)
-    per_page = 10  # simplest choice
+    per_page = 10
+
+    tag_id = request.args.get("tag_id", type=int)
 
     today = datetime.now()
 
-    # Query only needed rows per page
-    pagination = (
+    query = (
         Event.query
         .filter(Event.event_datetime < today)
         .order_by(Event.event_datetime.desc())
-        .paginate(page=page, per_page=per_page, error_out=False)
+    )
+
+    # --- NEW FILTER ---
+    if tag_id:
+        query = query.filter(Event.tag_id == tag_id)
+
+    pagination = query.paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False,
     )
 
     events = pagination.items
 
-    # Compute end time for calendar links
+    # Compute end time
     for e in events:
         e.local_dt = e.event_datetime
         e.end_dt = e.local_dt + timedelta(hours=2)
+
+    # Tag list for filter dropdown
+    all_tags = EventTag.query.order_by(EventTag.name).all()
 
     return render_template(
         "past_events.html",
         title="Past Events",
         events=events,
-        pagination=pagination
+        pagination=pagination,
+        all_tags=all_tags,
+        tag_id=tag_id
     )
 
 # ----------------------------
@@ -115,6 +130,9 @@ def create_event():
         abort(403)
 
     form = EventForm()
+    form.tag.choices = [
+        (t.id, f"{t.icon or ''} {t.name}") for t in EventTag.query.order_by(EventTag.name).all()
+    ]
 
     if form.validate_on_submit():
 
@@ -124,6 +142,9 @@ def create_event():
             host=form.host.data,
             description=form.description.data,
         )
+
+        # Set tags
+        new_event.tag = EventTag.query.get(form.tag.data) if form.tag.data != 0 else None
 
         db.session.add(new_event)
         db.session.commit()
@@ -151,12 +172,24 @@ def edit_event(event_id):
 
     form = EventForm(obj=event)
 
+    # Populate tag choices
+    form.tag.choices =  [
+        (t.id, f"{t.icon or ''} {t.name}") for t in EventTag.query.order_by(EventTag.name).all()
+    ]
+
+    # Pre-select current tag
+    if request.method == "GET" and event.tag:
+        form.tag.data = event.tag.id
+
     if form.validate_on_submit():
 
         event.title = form.title.data
         event.event_datetime = form.event_datetime.data
         event.host = form.host.data
         event.description = form.description.data
+
+        # Update tag
+        event.tag = EventTag.query.get(form.tag.data) if form.tag.data != 0 else None
 
         db.session.commit()
         flash("Event updated successfully!")
@@ -187,4 +220,4 @@ def delete_event(event_id):
     db.session.commit()
 
     flash("Event deleted successfully!")
-    return redirect(url_for("events.events_list"))
+    return redirect(url_for("events.past_events"))
