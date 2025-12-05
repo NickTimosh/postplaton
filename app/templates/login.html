@@ -1,10 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h2>Host Login</h2>
-  <form method="post">
-    {{ form.hidden_tag() }}
-    <div>{{ form.username.label }} {{ form.username() }}</div>
-    <div>{{ form.password.label }} {{ form.password() }}</div>
-    <div>{{ form.submit() }}</div>
-  </form>
+
+<div class="page-wrap">
+  <div class="page-container">
+
+    <section class="events-page">
+
+      <h2 class="page-title">Host Login</h2>
+
+      <form method="post" class="event-form">
+        {{ form.hidden_tag() }}
+
+        <div class="form-field">
+          <label class="form-label">{{ form.username.label }}</label>
+          {{ form.username(class="form-input") }}
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">{{ form.password.label }}</label>
+          {{ form.password(class="form-input") }}
+        </div>
+
+        <div class="form-actions">
+          {{ form.submit(class="btn btn-create") }}
+        </div>
+      </form>
+
+    </section>
+
+  </div>
+</div>
+
 {% endblock %}
