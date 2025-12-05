@@ -391,10 +391,23 @@ body {
   padding-left: 4px;
 }
 
-.event-details-line {
-  margin: 4px 0;
-  font-size: 15px;
-  color: #374151;
+.event-details-line a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f5ef0; /* primary button color */
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(15, 94, 240, 0.08); /* subtle background */
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.event-details-line a:hover {
+    background: rgba(15, 94, 240, 0.15);
+    color: #0d4bcc; /* slightly darker on hover */
 }
 
 .event-details-description {
