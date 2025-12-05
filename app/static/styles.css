@@ -42,6 +42,60 @@ body {
   flex:1;
 }
 
+/* --- Nav Improvements --- */
+
+.nav-item {
+  color: #22313f;
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.04);
+}
+
+/* Highlight active page */
+.nav-item.active {
+  background: rgba(0,0,0,0.06);
+  opacity: 1;
+}
+
+/* Login/Logout button (subtle button look) */
+.nav-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #0f5ef0;
+  color: #fff !important;
+}
+
+.nav-btn:hover {
+  filter: brightness(90%);
+  transition: 0.2s ease-in-out;
+}
+
+/* Mobile stacking adjustment */
+@media (max-width: 600px) {
+  .topnav-inner {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .nav-btn {
+    margin-left: auto;
+  }
+}
+
 /* Page container centers the big white panel similar to the design */
 .page-wrap {
   display:flex;
