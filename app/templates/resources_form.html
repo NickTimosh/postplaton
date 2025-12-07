@@ -1,48 +1,48 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1 class="page-title">Add Resource</h1>
+<section class="events-page">
+    <h1 class="page-title">Add Resource</h1>
 
-<form method="POST" class="event-form">
-    {{ form.hidden_tag() }}
+    <form method="POST" class="event-form">
+        {{ form.hidden_tag() }}
 
-    <div class="form-field">
-        {{ form.title.label(class="form-label") }}
-        {{ form.title(class="form-input") }}
-    </div>
+        <div class="form-field">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-input") }}
+        </div>
 
-    <div class="form-field">
-        {{ form.url.label(class="form-label") }}
-        {{ form.url(class="form-input") }}
+        <div class="form-field">
+            {{ form.url.label(class="form-label") }}
+            {{ form.url(class="form-input") }}
 
-        {% if form.url.errors %}
-            <ul class="form-errors">
-                {% for error in form.url.errors %}
-                    Error: {{ error }}
-                {% endfor %}
-            </ul>
-        {% endif %}
+            {% if form.url.errors %}
+                <ul class="form-errors">
+                    {% for error in form.url.errors %}
+                        <li>Error: {{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
 
-    </div>
+        <div class="form-field">
+            {{ form.event_id.label(class="form-label") }}
+            {{ form.event_id(class="form-input") }}
+        </div>
 
-    <div class="form-field">
-        {{ form.event_id.label(class="form-label") }}
-        {{ form.event_id(class="form-input") }}
-    </div>
+        <div class="form-field">
+            {{ form.tag.label(class="form-label") }}
+            {{ form.tag(class="form-input") }}
+        </div>
 
-    <div class="form-field">
-        {{ form.tag.label(class="form-label") }}
-        {{ form.tag(class="form-input") }}
-    </div>
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-create") }}
+        </div>
+    </form>
 
-    <div class="form-actions">
-        {{ form.submit(class="btn btn-create") }}
-    </div>
-</form>
-
-<p class="event-details-line">
-    <br>
-    <a href="{{ url_for('resources.resources_list') }}">← Back to Resources</a>
-</p>
+    <p class="event-details-line" style="margin-top: 26px;">
+        <a href="{{ url_for('resources.resources_list') }}">← Back to Resources</a>
+    </p>
+</section>
 
 {% endblock %}

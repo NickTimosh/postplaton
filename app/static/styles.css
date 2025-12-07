@@ -42,6 +42,60 @@ body {
   flex:1;
 }
 
+/* --- Nav Improvements --- */
+
+.nav-item {
+  color: #22313f;
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.04);
+}
+
+/* Highlight active page */
+.nav-item.active {
+  background: rgba(0,0,0,0.06);
+  opacity: 1;
+}
+
+/* Login/Logout button (subtle button look) */
+.nav-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #0f5ef0;
+  color: #fff !important;
+}
+
+.nav-btn:hover {
+  filter: brightness(90%);
+  transition: 0.2s ease-in-out;
+}
+
+/* Mobile stacking adjustment */
+@media (max-width: 600px) {
+  .topnav-inner {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .nav-btn {
+    margin-left: auto;
+  }
+}
+
 /* Page container centers the big white panel similar to the design */
 .page-wrap {
   display:flex;
@@ -116,15 +170,16 @@ body {
 
 .past-event-item {
   display: grid;
-  grid-template-columns: 98px 1fr 80px; /* left badge, main content, small right column */
+  grid-template-columns: 98px auto 80px; /* left badge, main content, small right */
   gap: 18px;
-  align-items: center;
+  align-items: start; /* align items to top for multi-line text */
   background: #ffffff;
   padding: 18px 20px;
   border-radius: 12px;
   border: 1px solid rgba(27, 39, 51, 0.04);
   box-shadow: 0 8px 18px rgba(16, 24, 32, 0.04);
 }
+
 
 /* Date block (left) */
 .date-block {
@@ -166,18 +221,20 @@ body {
 .event-title {
   margin: 0 0 6px;
   font-size:16px;
-  margin-left: 10px;
+  line-height: 1.3;
+  overflow-wrap: break-word;
 }
 
 .event-title a {
   color:#1f2937;
   text-decoration:underline;
   font-weight:800;
+  margin-left: 10px;
 }
 
 .event-desc {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: unset;
   -webkit-box-orient: vertical;
   margin: 0;
   color:#475569;
@@ -187,14 +244,17 @@ body {
   overflow:hidden;
   text-overflow: ellipsis;
   margin-left: 10px;
+  overflow-wrap: break-word;
+  display: block
 }
 
 /* Right meta/action column */
 .event-meta {
   display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-end;
 }
 
 .meta-top {
@@ -331,10 +391,23 @@ body {
   padding-left: 4px;
 }
 
-.event-details-line {
-  margin: 4px 0;
-  font-size: 15px;
-  color: #374151;
+.event-details-line a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f5ef0; /* primary button color */
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(15, 94, 240, 0.08); /* subtle background */
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.event-details-line a:hover {
+    background: rgba(15, 94, 240, 0.15);
+    color: #0d4bcc; /* slightly darker on hover */
 }
 
 .event-details-description {

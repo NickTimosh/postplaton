@@ -4,36 +4,40 @@ from app.models import Event, EventTag
 from app import db
 from app.forms import EventForm
 from flask_login import login_required, current_user
+import pytz
 
 events_bp = Blueprint("events", __name__, url_prefix="/events")
+kyiv_tz = pytz.timezone("Europe/Kyiv")
 
 # ----------------------------
 # Grouping logic
 # ----------------------------
+
 def group_events(events):
-    """Group events into Today, This Week, Next 30 Days using Kyiv time."""
+    """Group events into Today, This Week, Later (Kyiv timezone aware)"""
+    
+    now = datetime.now(tz=kyiv_tz)
+    today = now.date()
+    end_of_week = today + timedelta(days=(6 - today.weekday()))  # Sunday
 
-    today = datetime.now().date()
-    end_of_week = today + timedelta(days=7)
-    next_30 = today + timedelta(days=30)
-
-    groups = {
-        "Today": [],
-        "This Week": [],
-        "Next 30 Days": []
-    }
+    groups = {"Today": [], "This Week": [], "Later": []}
 
     for e in events:
-        # Use Kyiv local datetime for grouping
-        event_date = e.event_datetime.date()
-        e.local_dt = e.event_datetime
+        # If naive datetime, treat it as Kyiv time
+        if e.event_datetime.tzinfo is None:
+            event_dt = kyiv_tz.localize(e.event_datetime)
+        else:
+            event_dt = e.event_datetime.astimezone(kyiv_tz)
 
-        if event_date == today:
+        event_date = event_dt.date()
+        e.local_dt = event_dt
+
+        if event_date == today and event_dt >= now:
             groups["Today"].append(e)
         elif today < event_date <= end_of_week:
             groups["This Week"].append(e)
-        elif end_of_week < event_date <= next_30:
-            groups["Next 30 Days"].append(e)
+        elif event_date > end_of_week:
+            groups["Later"].append(e)
 
     return groups
 
@@ -69,7 +73,7 @@ def past_events():
 
     tag_id = request.args.get("tag_id", type=int)
 
-    today = datetime.now()
+    today = datetime.now(tz=kyiv_tz)
 
     query = (
         Event.query
@@ -220,4 +224,4 @@ def delete_event(event_id):
     db.session.commit()
 
     flash("Event deleted successfully!")
-    return redirect(url_for("events.past_events"))
+    return redirect(url_for("events.events_list"))

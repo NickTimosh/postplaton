@@ -4,25 +4,36 @@
     <meta charset="UTF-8">
     <title>{{ title if title else "Event Manager" }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 
-<nav class="topnav">
-    <div class="topnav-inner">
-      <a href="/">Home</a>
-      <a href="/events">Events</a>
-      <a href="{{ url_for('resources.resources_list') }}">Resources</a>
-      <a href="{{ url_for('events.past_events') }}">Archive</a>
-      <div class="spacer"></div>
+    <nav class="topnav">
+        <div class="topnav-inner">
+        
+        <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">Home</a>
+        <a href="/events" class="nav-item {% if '/events' in request.path and 'past' not in request.path %}active{% endif %}">Events</a>
+        <a href="{{ url_for('resources.resources_list') }}" 
+            class="nav-item {% if '/resources' in request.path %}active{% endif %}">
+            Resources
+        </a>
+        <a href="{{ url_for('events.past_events') }}" 
+            class="nav-item {% if 'past' in request.path %}active{% endif %}">
+            Archive
+        </a>
 
-      {% if current_user.is_authenticated %}
-          <a href="{{ url_for('auth.logout') }}" class="nav-link">Logout</a>
-      {% else %}
-          <a href="{{ url_for('auth.login') }}" class="nav-link">Host Login</a>
-      {% endif %}
-    </div>
-</nav>
+        <div class="spacer"></div>
+
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('auth.logout') }}" class="nav-btn">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="nav-btn">Login</a>
+        {% endif %}
+        </div>
+    </nav>
+
 
 <main class="page-wrap">
   <div class="page-container">

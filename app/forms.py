@@ -12,7 +12,7 @@ class EventForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     event_datetime = DateTimeLocalField("Event Time",format="%Y-%m-%dT%H:%M",validators=[DataRequired()])
     host = StringField("Host", validators=[DataRequired()])
-    description = TextAreaField("Description")
+    description = TextAreaField("Description", validators=[DataRequired()])
 
     # Multi-select for event tags
     tag = SelectField(
