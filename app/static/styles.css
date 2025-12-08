@@ -170,9 +170,10 @@ body {
 
 .past-event-item {
   display: grid;
-  grid-template-columns: 98px auto 80px; /* left badge, main content, small right */
-  gap: 18px;
-  align-items: start; /* align items to top for multi-line text */
+  grid-template-columns: 98px 1fr auto;   /* only as much space as needed */
+  gap: 16px;
+
+  align-items: start;
   background: #ffffff;
   padding: 18px 20px;
   border-radius: 12px;
@@ -233,19 +234,19 @@ body {
 }
 
 .event-desc {
-  display: -webkit-box;
-  -webkit-line-clamp: unset;
-  -webkit-box-orient: vertical;
   margin: 0;
   color:#475569;
   font-size:13px;
   line-height:1.45;
-  max-height:3.2em;
-  overflow:hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;            /* ← force exactly 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   text-overflow: ellipsis;
+
   margin-left: 10px;
   overflow-wrap: break-word;
-  display: block
 }
 
 /* Right meta/action column */
@@ -369,6 +370,17 @@ body {
 
   .page-container {
     padding: 0 18px;
+  }
+
+    .past-event-item {
+    grid-template-columns: 84px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .past-event-item .event-meta {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    justify-self: start;   /* left align on mobile */
   }
 }
 
