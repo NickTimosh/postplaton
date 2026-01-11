@@ -1,3 +1,14 @@
+## How to run locally
+```
+pip install pipenv
+git clone <repository-url>
+cd <project-folder>
+pipenv install
+export FLASK_APP=wsgi_local.py
+pipenv run flask db upgrade
+pipenv run python run.py
+```
+
 ### How to deploy on PythonAnywhere (PA)
 
 #### Step 1: Upload your files to PythonAnywhere
@@ -49,3 +60,11 @@ flask db upgrade
 If you want to avoid hardcoding secrets, open your WSGI file and set: `os.environ['SECRET_KEY'] = 'super_secret_here'`
 
 Or use a .env file and python-dotenv, but remember to pip install python-dotenv in your virtualenv.
+
+### How to dmigrate the database
+After updating the database file events.db there are a ferw steps to migrate the database:
+```
+pipenv run flask db migrate -m "Update..."
+pipenv run flask db upgrade
+sqlite3 instance/events.db "select count(*) from event;"
+```
