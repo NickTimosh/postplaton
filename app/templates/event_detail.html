@@ -21,9 +21,7 @@
             <strong>Host:</strong> {{ event.host }}
         </p>
 
-        <p class="event-details-description">
-            {{ event.description | replace('\n','<br>') | safe }}
-        </p>
+        <p class="event-details-description">{{ event.description }}</p>
 
         {% if current_user.is_authenticated and current_user.is_host %}
         <div class="event-details-actions">

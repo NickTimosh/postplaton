@@ -8,8 +8,11 @@ import os
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():
-    app = Flask(__name__, instance_relative_config=True)
+def create_app(instance_path=None):
+    if instance_path:
+        app = Flask(__name__, instance_path=instance_path, instance_relative_config=True)
+    else:
+        app = Flask(__name__, instance_relative_config=True)
 
     # Database configuration
     db_path = os.path.join(app.instance_path, "events.db")
