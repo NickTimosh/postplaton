@@ -1,4 +1,7 @@
 ## How to run locally
+
+Instructions below:
+
 ```
 pip install pipenv
 git clone <repository-url>
